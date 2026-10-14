@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rooms Hot List — Nextnox</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+<div class="banner" id="announce">
+  <span class="cube">🎲</span>
+  <p><b>Rooms Hot List</b> — the most-visited rooms on the server right now. Click any room to see details.</p>
+  <button class="close" onclick="dismissBanner()">✕</button>
+</div>
+
+<div class="content">
+  <h2 class="section-title">Rooms Hot List</h2>
+  <input id="filter" class="searchbar" placeholder="Filter rooms…" oninput="renderRooms()">
+  <div class="rooms-grid" id="rooms"><div class="loading">Loading rooms…</div></div>
+</div>
+
+<footer>Nextnox local community server</footer>
+<script src="app.js"></script>
+<script>
+let allRooms = [];
+function renderRooms() {
+  const q = document.getElementById('filter').value.toLowerCase();
+  const list = allRooms.filter(r => (r.Name || '').toLowerCase().includes(q));
+  document.getElementById('rooms').innerHTML = list.length
+    ? list.map(r => roomCard(r, 'Nextnox')).join('')
+    : '<div class="empty">No rooms match.</div>';
+}
+(async () => {
+  try {
+    const data = await api('/roomserver/rooms/hot?take=100');
+    allRooms = data.results || data.Results || [];
+    renderRooms();
+  } catch (e) {
+    document.getElementById('rooms').innerHTML = '<div class="empty">Could not load rooms.</div>';
+  }
+})();
+</script>
+</body>
+</html>

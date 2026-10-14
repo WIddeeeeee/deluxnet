@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nextnox — Play Together</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+
+<div class="banner" id="announce">
+  <span class="cube">🎲</span>
+  <p><b>Welcome to your local community server!</b> This site is a tribute to the classic community hubs — browse rooms, find players, and jump in. Run by you, for your players. <b>Have fun! 🎉</b></p>
+  <button class="close" onclick="dismissBanner()">✕</button>
+</div>
+
+<div class="hero-band">
+  <div class="hero-inner">
+    <div class="hero-cards">
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#2c7de8,#123a7a);flex-direction:column;gap:6px" onclick="location.href='creator.html'">
+          <div style="font-family:Jost;font-weight:800;font-size:30px">CREATOR HUB</div>
+          <div style="font-size:14px;opacity:.85" id="creatorStats">Build · Share · Earn</div>
+        </div>
+        <div class="caption" onclick="location.href='creator.html'">View Creator Hub <span class="chev">›</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#3a2b1a,#1d1d1d);flex-direction:column;gap:8px">
+          <div style="font-family:Jost;font-weight:800;font-size:44px;color:var(--accent)">NEXTNOX</div>
+          <div style="font-size:14px;color:var(--muted)">Play with friends on all your devices</div>
+        </div>
+        <div class="caption">Download For Free <span class="chev">›</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#9c36e8,#3a0e6e);flex-direction:column;gap:6px">
+          <div style="font-family:Jost;font-weight:800;font-size:34px">SEASON<br>KICKOFF 🎊</div>
+          <div style="font-size:14px;opacity:.85">The server is live — come hang out!</div>
+        </div>
+        <div class="caption" onclick="location.href='rooms.html'">Join The Party <span class="chev">›</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content" style="padding-top:0">
+  <div class="cat-pills">
+    <a class="pill" href="creator.html">📰 News <span class="chev">›</span></a>
+    <a class="pill" href="#feed">📅 Events <span class="chev">›</span></a>
+    <a class="pill" href="rooms.html">🏠 Rooms <span class="chev">›</span></a>
+  </div>
+
+  <h2 class="section-title">Take A Look At What's Happening Right Now</h2>
+  <div class="home-grid">
+    <aside class="side-card">
+      <h3>Featured Rooms</h3>
+      <div id="featured"><div class="loading">Loading…</div></div>
+    </aside>
+    <div class="feed" id="feed"><div class="loading">Loading feed…</div></div>
+  </div>
+</div>
+
+<footer>Nextnox local community server · a tribute to the classic community hubs</footer>
+<script src="app.js"></script>
+<script>
+(async () => {
+  try {
+    const s = await api('/api/stats');
+    document.getElementById('creatorStats').textContent =
+      `${fmtNum(s.players)} players · ${fmtNum(s.rooms)} rooms · ${fmtNum(s.online)} online`;
+  } catch (e) {}
+  try {
+    const data = await api('/roomserver/rooms/hot?take=8');
+    const rooms = data.results || data.Results || [];
+    document.getElementById('featured').innerHTML = rooms.length
+      ? rooms.slice(0, 5).map(r => `
+          <a class="side-room" href="room.html?name=${encodeURIComponent(r.Name)}">
+            <div class="thumb" style="background:${gradFor(r.Name)}">${initialOf(r.Name)}</div>
+            <div><b>^${esc(r.Name)}</b><span>🚶 ${fmtNum((r.Stats || {}).VisitCount)} visits</span></div>
+          </a>`).join('')
+      : '<div class="empty">No rooms yet.</div>';
+    document.getElementById('feed').innerHTML = rooms.length
+      ? rooms.map(r => feedPost(r, 'Nextnox Team')).join('')
+      : '<div class="empty">Nothing happening yet — be the first to make a room!</div>';
+  } catch (e) {
+    document.getElementById('feed').innerHTML = '<div class="empty">Could not load the feed.</div>';
+    document.getElementById('featured').innerHTML = '<div class="empty">Could not load rooms.</div>';
+  }
+})();
+</script>
+</body>
+</html>

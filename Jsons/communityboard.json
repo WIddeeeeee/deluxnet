@@ -1,0 +1,28 @@
+{
+  "FeaturedPlayer": {
+    "Id": 1,
+    "TitleOverride": "testing testing 123",
+    "UrlOverride": null
+  },
+  "FeaturedRoomGroup": {
+    "FeaturedRoomGroupId": 1,
+    "Name": "Get Started",
+    "StartAt": "2023-05-02T07:00:00Z",
+    "EndAt": "9999-05-09T07:00:00Z",
+    "FeaturedRooms": []
+  },
+  "CurrentAnnouncement": {
+    "Message": "Welcome to IrisRec2018!",
+    "MoreInfoUrl": "https://discord.gg/faeWbhdEEZ"
+  },
+  "InstagramImages": [],
+  "Videos": [
+    {
+      "BlobName": "uxds01E26OTrrpl5.mov",
+      "Title": "sack boi",
+      "Description": "sigma?",
+      "ThumbnailBlobName": "uxds01E26OTrrpl5.png",
+      "SourceUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    }
+  ]
+}

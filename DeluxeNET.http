@@ -1,0 +1,6 @@
+@DeluxeNET_HostAddress = http://localhost:5118
+
+GET {{DeluxeNET_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

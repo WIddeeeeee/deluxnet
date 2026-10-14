@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room — Nextnox</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+
+<div class="content" id="content"><div class="loading">Loading room…</div></div>
+
+<footer>Nextnox local community server</footer>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const name = qs('name');
+  const box = document.getElementById('content');
+  if (!name) { box.innerHTML = '<div class="empty">No room specified.</div>'; return; }
+  try {
+    const room = await api('/roomserver/rooms?name=' + encodeURIComponent(name));
+    const stats = room.Stats || {};
+    const tags = (room.Tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('');
+    const subs = (room.SubRooms || []).map(s =>
+      `<div class="kv"><span>🚪 ${esc(s.Name)}</span><span>${s.MaxPlayers} players</span></div>`).join('')
+      || '<div class="empty">No sub-rooms.</div>';
+    const created = room.CreatedAt ? new Date(room.CreatedAt).toLocaleDateString() : '—';
+    box.innerHTML = `
+      <div class="detail-hero" style="background:${gradFor(room.Name)}">
+        <h1>^${esc(room.Name)}</h1>
+        <p>${esc(room.Description || 'No description yet.')}</p>
+        <div class="tags">${tags}</div>
+      </div>
+      <div class="detail-grid">
+        <div class="panel">
+          <h3>Sub-rooms</h3>
+          ${subs}
+        </div>
+        <div class="panel">
+          <h3>Room Stats</h3>
+          <div class="kv"><span>🚶 Visits</span><span>${fmtNum(stats.VisitCount)}</span></div>
+          <div class="kv"><span>👍 Cheers</span><span>${fmtNum(stats.CheerCount)}</span></div>
+          <div class="kv"><span>⭐ Favorites</span><span>${fmtNum(stats.FavoriteCount)}</span></div>
+          <div class="kv"><span>👥 Max players</span><span>${room.MaxPlayers ?? '—'}</span></div>
+          <div class="kv"><span>📅 Created</span><span>${created}</span></div>
+          <div class="kv"><span>🧒 Supports juniors</span><span>${room.SupportsJuniors ? 'Yes' : 'No'}</span></div>
+        </div>
+      </div>`;
+  } catch (e) {
+    box.innerHTML = '<div class="empty">Room not found.</div>';
+  }
+})();
+</script>
+</body>
+</html>

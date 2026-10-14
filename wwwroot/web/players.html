@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Players — Nextnox</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+
+<div class="content">
+  <h2 class="section-title">Find Players</h2>
+  <input id="q" class="searchbar" placeholder="🔍 Search by username… (min 2 characters)" oninput="doSearch()">
+  <div class="feed" id="results"><div class="empty">Type at least 2 characters to search.</div></div>
+</div>
+
+<footer>Nextnox local community server</footer>
+<script src="app.js"></script>
+<script>
+let timer;
+async function doSearch() {
+  clearTimeout(timer);
+  const q = document.getElementById('q').value.trim();
+  const box = document.getElementById('results');
+  if (q.length < 2) { box.innerHTML = '<div class="empty">Type at least 2 characters to search.</div>'; return; }
+  timer = setTimeout(async () => {
+    box.innerHTML = '<div class="loading">Searching…</div>';
+    try {
+      const players = await api('/account/search?username=' + encodeURIComponent(q));
+      box.innerHTML = players.length
+        ? players.map(playerRow).join('')
+        : '<div class="empty">No players found.</div>';
+    } catch (e) {
+      box.innerHTML = '<div class="empty">Search failed.</div>';
+    }
+  }, 250);
+}
+const q = qs('q');
+if (q) { document.getElementById('q').value = q; doSearch(); }
+</script>
+</body>
+</html>

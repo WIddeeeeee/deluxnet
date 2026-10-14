@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Player — Nextnox</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+
+<div class="content" id="content"><div class="loading">Loading player…</div></div>
+
+<footer>Nextnox local community server</footer>
+<script src="app.js"></script>
+<script>
+(async () => {
+  const id = qs('id');
+  const box = document.getElementById('content');
+  if (!id) { box.innerHTML = '<div class="empty">No player specified.</div>'; return; }
+  try {
+    const [users, bioRes, progRes] = await Promise.all([
+      api('/account/bulk?id=' + encodeURIComponent(id)),
+      api('/account/' + encodeURIComponent(id) + '/bio').catch(() => ({})),
+      api('/api/players/v2/progression/bulk?id=' + encodeURIComponent(id)).catch(() => [])
+    ]);
+    const u = (users || [])[0];
+    if (!u) { box.innerHTML = '<div class="empty">Player not found.</div>'; return; }
+    const prog = (progRes || []).find(p => String(p.PlayerId) === String(id)) || {};
+    const created = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—';
+    box.innerHTML = `
+      <div class="profile-card">
+        <div class="avatar">${initialOf(u.displayName || u.username)}</div>
+        <div style="flex:1">
+          <h1>${esc(u.displayName)}</h1>
+          <div class="sub">@${esc(u.username)} · joined ${created}</div>
+          <div class="bio">${esc(bioRes.bio || 'No bio yet.')}</div>
+        </div>
+      </div>
+      <div class="detail-grid">
+        <div class="panel">
+          <h3>About</h3>
+          <div class="kv"><span>Username</span><span>@${esc(u.username)}</span></div>
+          <div class="kv"><span>Display name</span><span>${esc(u.displayName)}</span></div>
+          <div class="kv"><span>Junior account</span><span>${u.isJunior ? 'Yes' : 'No'}</span></div>
+        </div>
+        <div class="panel">
+          <h3>Progression</h3>
+          <div class="kv"><span>🎖 Level</span><span>${prog.Level ?? 1}</span></div>
+          <div class="kv"><span>✨ XP</span><span>${fmtNum(prog.XP ?? 0)}</span></div>
+        </div>
+      </div>`;
+  } catch (e) {
+    box.innerHTML = '<div class="empty">Player not found.</div>';
+  }
+})();
+</script>
+</body>
+</html>

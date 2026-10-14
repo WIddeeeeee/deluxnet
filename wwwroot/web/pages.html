@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Player Pages — rec.net</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding:20px}
+.pcard{background:#1e1712;border:1px solid #2a211a;border-radius:10px;padding:16px}
+.pcard a{color:#ff9a3c;text-decoration:none;font-weight:700;font-size:17px}
+.pcard .upd{color:#8a7f70;font-size:12px;margin-top:6px}
+.pcard .mine{margin-top:10px;font-size:13px}
+.pcard .mine a{font-size:13px}
+.empty{padding:40px;text-align:center;color:#8a7f70}
+.hdr-row{display:flex;align-items:center;gap:12px;padding:20px 20px 0}
+.hdr-row h1{margin:0;font-size:24px}
+</style></head><body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+</nav>
+<div class="hdr-row"><h1>📄 Player Pages</h1><span style="color:#8a7f70">personal pages on rec.net</span></div>
+<div class="pages-grid" id="grid"><div class="empty">Loading…</div></div>
+<script>
+fetch('/api/pages/directory').then(r=>r.json()).then(list=>{
+  const g=document.getElementById('grid');
+  if(!list.length){g.innerHTML='<div class="empty">No pages yet. Be the first — see the guide below.</div>';return;}
+  g.innerHTML=list.map(p=>
+    `<div class="pcard"><a href="/users/${encodeURIComponent(p.username)}">~${esc(p.username)}</a>
+     <div class="upd">updated ${new Date(p.updatedAt).toLocaleDateString()}</div></div>`
+  ).join('');
+}).catch(()=>{document.getElementById('grid').innerHTML='<div class="empty">Could not load pages.</div>';});
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+</script>
+<div style="max-width:700px;margin:0 auto 60px;padding:0 20px;color:#cbbfae;font-size:14px;line-height:1.7">
+<h3 style="color:#ff7a1a">Make your own page</h3>
+<ol>
+<li>Get your login token (register via <code>POST /account/register</code>).</li>
+<li><code>PUT /api/pages/me</code> with <code>{"html":"&lt;h1&gt;Hi!&lt;/h1&gt;"}</code>
+    and header <code>Authorization: Bearer YOUR_TOKEN</code>.</li>
+<li>Visit <code>/users/YOURNAME</code> — that's your page on rec.net!</li>
+</ol>
+<p>HTML is sanitized (no scripts). 50KB max, 10 updates/hour. Full guide: <b>WEBPAGE_HOSTING.md</b>.</p>
+</div>
+</body></html>

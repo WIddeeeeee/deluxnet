@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creator Hub — Nextnox</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <a class="brand" href="index.html">NEXT<small>NOX</small></a>
+  <a class="navlink" href="rooms.html"><span class="lbl">Rooms</span></a>
+  <a class="navlink" href="players.html"><span class="lbl">Players</span></a>
+  <a class="navlink" href="pages.html"><span class="lbl">Pages</span></a>
+  <a class="navlink" href="creator.html"><span class="lbl">Creator Hub</span></a>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="location.href='players.html'" title="Search">🔍</button>
+    <button class="btn-outline">Login</button>
+    <button class="btn-solid">⬇ Download</button>
+  </div>
+</nav>
+<div class="banner" id="announce">
+  <span class="cube">🎲</span>
+  <p><b>Creator Hub</b> — everything you need to build rooms, grow an audience, and get rewarded on this server.</p>
+  <button class="close" onclick="dismissBanner()">✕</button>
+</div>
+
+<div class="creator-layout">
+  <aside class="subnav">
+    <a href="#top" class="active">📊 Stats</a>
+    <a href="#news">📰 News</a>
+    <a href="#learn">🎓 Learn</a>
+    <a href="#earn">💰 Earn</a>
+    <a href="#connect">🤝 Connect</a>
+    <a href="#resources">📚 Resources</a>
+  </aside>
+
+  <div class="creator-main" id="top">
+    <h1>Creator Hub</h1>
+
+    <div class="hero-cards" style="margin-bottom:34px">
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#e8632c,#8f2f0e);flex-direction:column;gap:6px">
+          <div style="font-family:Jost;font-weight:800;font-size:30px">ROOMS 2.0</div>
+          <div style="font-size:14px;opacity:.9">Your creative playground</div>
+        </div>
+        <div class="caption">New Creator Tutorials <span class="chev">›</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#9c36e8,#4a0e8f);flex-direction:column;gap:6px">
+          <div style="font-family:Jost;font-weight:800;font-size:30px">ROOM<br>REWARDS</div>
+          <div style="font-size:14px;opacity:.9">Get rewarded for great rooms</div>
+        </div>
+        <div class="caption">Room Rewards <span class="chev">›</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="cover" style="background:linear-gradient(135deg,#37b24d,#0e6b2f);flex-direction:column;gap:6px">
+          <div style="font-family:Jost;font-weight:800;font-size:30px">ROOM BOOSTS<br>ARE LIVE 🚀</div>
+          <div style="font-size:14px;opacity:.9">Boost your room to the Hot List</div>
+        </div>
+        <div class="caption">Boost Your Room <span class="chev">›</span></div>
+      </div>
+    </div>
+
+    <h2 class="section-title" id="news">News</h2>
+    <div class="news-grid" style="margin-bottom:34px">
+      <div class="news-card">
+        <div class="news-cover" style="background:linear-gradient(135deg,#2c7de8,#0e3a8f)">🎨</div>
+        <div class="news-body"><b>Creator Programs — Reimagined</b><span class="learn-more">Learn More <span class="chev">›</span></span></div>
+      </div>
+      <div class="news-card">
+        <div class="news-cover" style="background:linear-gradient(135deg,#e8632c,#8f2f0e)">🏆</div>
+        <div class="news-body"><b>October Room Rewards Update</b><span class="learn-more">Learn More <span class="chev">›</span></span></div>
+      </div>
+      <div class="news-card">
+        <div class="news-cover" style="background:linear-gradient(135deg,#37b24d,#0e6b2f)">🛠️</div>
+        <div class="news-body"><b>Welcome to the 2026 Build Contest!</b><span class="learn-more">Learn More <span class="chev">›</span></span></div>
+      </div>
+      <div class="news-card">
+        <div class="news-cover" style="background:linear-gradient(135deg,#9c36e8,#4a0e8f)">📈</div>
+        <div class="news-body"><b>Room Analytics Are Here</b><span class="learn-more">Learn More <span class="chev">›</span></span></div>
+      </div>
+    </div>
+
+    <h2 class="section-title" id="learn">Learn</h2>
+    <div class="panel" style="margin-bottom:20px">
+      <h3>🎓 Creator Academy</h3>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6">Start from zero and ship your first room. Tutorials cover the maker pen, circuits, sub-rooms, and publishing — everything is free on this server.</p>
+      <span class="learn-more">Start Learning <span class="chev">›</span></span>
+    </div>
+
+    <h2 class="section-title" id="earn">Earn</h2>
+    <div class="panel" style="margin-bottom:20px">
+      <h3>💰 Earn Rewards</h3>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6">Great rooms get noticed. Visits, cheers, and favorites push your creations up the Hot List — and the best creators get featured on the homepage.</p>
+      <span class="learn-more">How Rewards Work <span class="chev">›</span></span>
+    </div>
+
+    <h2 class="section-title" id="connect">Connect</h2>
+    <div class="panel" style="margin-bottom:20px">
+      <h3>🤝 Creator Clubs</h3>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6">Team up with other builders. Share prefabs, get feedback, and co-host events in your rooms.</p>
+      <span class="learn-more">Find Your Club <span class="chev">›</span></span>
+    </div>
+
+    <h2 class="section-title" id="resources">Resources</h2>
+    <div class="panel">
+      <div class="kv"><span>📖 Documentation</span><span class="learn-more">Open <span class="chev">›</span></span></div>
+      <div class="kv"><span>💬 Support</span><span class="learn-more">Get Help <span class="chev">›</span></span></div>
+      <div class="kv"><span>🛠 Server Status</span><span class="learn-more" id="srvStatus">Checking…</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>Nextnox local community server</footer>
+<script src="app.js"></script>
+<script>
+api('/api/stats').then(s => {
+  document.getElementById('srvStatus').textContent = `Online · ${s.online} in game`;
+}).catch(() => {
+  document.getElementById('srvStatus').textContent = 'Offline';
+});
+</script>
+</body>
+</html>
